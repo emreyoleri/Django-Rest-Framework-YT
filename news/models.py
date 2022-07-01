@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Article(models.Model):
-    athor = models.CharField(max_length=150)
+    author = models.CharField(max_length=150)
     title = models.CharField(max_length=120)
     description = models.CharField(max_length=200)
     text = models.TextField()
