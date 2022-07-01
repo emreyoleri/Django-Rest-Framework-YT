@@ -11,5 +11,5 @@ def article_list_create_api_view(request):
 
     if request.method == "GET":
         articles = Article.objects.filter(is_active=True)
-        serializer = ArticleSerializer(articles)  # error
+        serializer = ArticleSerializer(articles, many=True)  # error
         return Response(serializer.data)
