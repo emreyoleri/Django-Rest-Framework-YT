@@ -5,7 +5,26 @@ from rest_framework.decorators import api_view
 from news.models import Article
 from news.api.serializers import ArticleSerializer
 
+# class views
+from rest_framework.views import APIView
 
+
+class ArticleListCreateAPIView(APIView):
+
+    def get(self, request):
+        articles = Article.objects.filter(is_active=True)
+        serializer = ArticleSerializer(articles, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = ArticleSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+# ? FUNCTION METHOD
 @api_view(["GET", "POST"])
 def article_list_create_api_view(request, *args, **kwargs):
 
