@@ -26,14 +26,14 @@ class ArticleListCreateAPIView(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class ArticleDetailAPIVIEW(APIView):
+class ArticleDetailAPIView(APIView):
 
-    def get_object(self, request, pk):
+    def get_object(self, pk):
         article_instance = get_object_or_404(Article, pk=pk)
         return article_instance
 
     def get(self, request, pk):
-        article = self.get_object(request, pk)
+        article = self.get_object(pk=pk)
         serializer = ArticleSerializer(article)
         return Response(serializer.data)
 
@@ -43,9 +43,9 @@ class ArticleDetailAPIVIEW(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk):
+    def delete(self, pk):
         article = self.get_object(pk=pk)
         article.delete()
 
