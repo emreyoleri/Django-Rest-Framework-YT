@@ -37,3 +37,9 @@ class ArticleSerializer(serializers.Serializer):
         instance.save()
 
         return instance
+
+    def validate(self, data):
+        if data["title"] == data["description"]:
+            raise serializers.ValidationError(
+                "Title and description fields cannot be the same. please enter a different value")
+        return data
