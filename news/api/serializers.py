@@ -43,3 +43,9 @@ class ArticleSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 "Title and description fields cannot be the same. please enter a different value")
         return data
+
+    def validate_title(self, value):
+        if len(value) < 20:
+            raise serializers.ValidationError(
+                f"The title field must be at least 20 characters. you entered ({len(value)}) characters")
+        return value
