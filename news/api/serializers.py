@@ -1,8 +1,31 @@
 from rest_framework import serializers
 from news.models import Article
 
+from datetime import datetime
+from django.utils.timesince import timesince
 
-class ArticleSerializer(serializers.Serializer):
+
+class ArticleSerializer(serializers.ModelSerializer):
+    time_since_pub = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Article
+        fields = "__all__"
+        # fields = ["author", "title", "description"]
+        # exclude = ["author", "title", "description"]  # without this fields
+        read_only_fields = ["id", "creation_date", "date_of_update"]
+
+    def get_time_since_pub(self, object):
+        now = datetime.now()
+        pub_date = object.release_date
+        time_delta = timesince(pub_date, now)
+        return time_delta
+
+
+# ? Standart Serializer
+
+
+class ArticleDefaultSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     author = serializers.CharField()
     title = serializers.CharField()
