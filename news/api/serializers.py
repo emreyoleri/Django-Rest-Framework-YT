@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from news.models import Article
 
-from datetime import datetime
+from datetime import datetime, date
 from django.utils.timesince import timesince
 
 
@@ -18,9 +18,18 @@ class ArticleSerializer(serializers.ModelSerializer):
     def get_time_since_pub(self, object):
         now = datetime.now()
         pub_date = object.release_date
-        time_delta = timesince(pub_date, now)
-        return time_delta
+        if object.is_active:
+            time_delta = timesince(pub_date, now)
+            return time_delta
+        else:
+            return "Now Active!"
 
+    def validate_release_date(self, valueOfDate):
+        today = date.today()
+        if valueOfDate > today:
+            raise serializers.ValidationError(
+                "Release date cannot be a future date")
+        return valueOfDate
 
 # ? Standart Serializer
 
