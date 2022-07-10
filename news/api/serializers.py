@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from news.models import Article
+from news.models import Article, Journalist
 
 from datetime import datetime, date
 from django.utils.timesince import timesince
@@ -7,6 +7,8 @@ from django.utils.timesince import timesince
 
 class ArticleSerializer(serializers.ModelSerializer):
     time_since_pub = serializers.SerializerMethodField()
+    # author = serializers.StringRelatedField()
+    # author = JournalistSerializer()
 
     class Meta:
         model = Article
@@ -30,6 +32,16 @@ class ArticleSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "Release date cannot be a future date")
         return valueOfDate
+
+
+class JournalistSerializer(serializers.ModelSerializer):
+
+    articles = ArticleSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Journalist
+        fields = "__all__"
+
 
 # ? Standart Serializer
 

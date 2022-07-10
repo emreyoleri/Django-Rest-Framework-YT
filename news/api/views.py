@@ -3,12 +3,27 @@ from rest_framework import status  # for http request
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from news.models import Article
-from news.api.serializers import ArticleSerializer
+from news.models import Article, Journalist
+from news.api.serializers import ArticleSerializer, JournalistSerializer
 
 # class views
 from rest_framework.views import APIView
 from rest_framework.generics import get_object_or_404
+
+
+class JournalistCreateAPIView(APIView):
+
+    def get(self, request):
+        journalists = Journalist.objects.all()
+        serializer = JournalistSerializer(journalists, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = JournalistSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ArticleListCreateAPIView(APIView):
