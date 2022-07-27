@@ -1,19 +1,28 @@
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import ListModelMixin, CreateModelMixin
+
+from rest_framework import generics
+
 from books.api.serializers import BookSerializer, CommentSerializer
 from books.models import Book
 
-
-class BookListCreateAPIView(ListModelMixin, CreateModelMixin, GenericAPIView):
+# ? ConcreteViews
+class BookListCreateAPIView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-    # List
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+# ? GenericAPIView
+# class BookListCreateAPIView(ListModelMixin, CreateModelMixin, GenericAPIView):
+#     queryset = Book.objects.all()
+#     serializer_class = BookSerializer
 
-    # Create
+#     # List
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
+
+#     # Create
+
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
