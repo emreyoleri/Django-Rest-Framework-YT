@@ -7,4 +7,6 @@ urlpatterns = [
          api_views.BookDetailCreateAPIView.as_view(), name="book-detail"),
     path("books/<int:book_pk>/comment",
          api_views.CommentCreateAPIView.as_view(), name="comment"),
+    path("comments/<int:pk>",
+         api_views.CommentDetailCreateAPIView.as_view(), name="comment-list"),
 ]
