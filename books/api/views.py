@@ -11,6 +11,11 @@ class BookListCreateAPIView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
+# ? ConcreteViews
+class BookDetailCreateAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
 
 # ? GenericAPIView
 # class BookListCreateAPIView(ListModelMixin, CreateModelMixin, GenericAPIView):
