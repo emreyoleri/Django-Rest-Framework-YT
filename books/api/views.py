@@ -4,7 +4,7 @@ from books.api.serializers import BookSerializer, CommentSerializer
 from books.models import Book
 
 
-class BookSerializer(ListModelMixin, CreateModelMixin, GenericAPIView):
+class BookListCreateAPIView(ListModelMixin, CreateModelMixin, GenericAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
