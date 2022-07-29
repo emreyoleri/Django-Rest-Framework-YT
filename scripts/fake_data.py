@@ -1,6 +1,6 @@
 import os
 import random
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kitap_pazari.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'book_market.settings')
 
 import django
 django.setup()
