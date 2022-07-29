@@ -3,6 +3,8 @@ from books.models import Book, Comment
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    owner_of_comment = serializers.StringRelatedField(read_only=True)
+
     class Meta:
         model = Comment
         # fields = "__all__"
