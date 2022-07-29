@@ -4,7 +4,7 @@ from rest_framework.mixins import ListModelMixin, CreateModelMixin
 from rest_framework import generics
 from rest_framework.generics import get_object_or_404
 from rest_framework import permissions
-from books.api.permissions import IsAdminUserOrReadOnly
+from books.api.permissions import IsAdminUserOrReadOnly, IsOwnerOfCommentOrReadOnly
 from rest_framework.exceptions import ValidationError
 
 from books.api.serializers import BookSerializer, CommentSerializer
@@ -40,6 +40,7 @@ class CommentCreateAPIView(generics.CreateAPIView):
 class CommentDetailCreateAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = [IsOwnerOfCommentOrReadOnly]
 
 
 # ? GenericAPIView
