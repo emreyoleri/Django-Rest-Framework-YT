@@ -31,10 +31,10 @@ class CommentCreateAPIView(generics.CreateAPIView):
         book_pk = self.kwargs.get("book_pk")
         book = get_object_or_404(Book, pk=book_pk)
         user = self.request.user
-        comments = Comment.objects.filter(book=book, owner_of_commnet=user)
+        comments = Comment.objects.filter(book=book, owner_of_comment=user)
         if comments.exists():
             raise ValidationError("You already have a for this book")
-        return serializer.save(book=book, owner_of_commnet=user)
+        return serializer.save(book=book, owner_of_comment=user)
 
 
 class CommentDetailCreateAPIView(generics.RetrieveUpdateDestroyAPIView):
