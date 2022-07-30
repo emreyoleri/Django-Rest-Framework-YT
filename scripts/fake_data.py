@@ -1,16 +1,15 @@
+from books.api.serializers import BookSerializer
+import requests
+from pprint import pprint
+from faker import Faker
+from django.contrib.auth.models import User
+import django
 import os
 import random
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'book_market.settings')
 
-import django
 django.setup()
 
-from django.contrib.auth.models import User
-
-from faker import Faker
-
-import requests 
-from pprint import pprint
 
 def set_user():
     fake = Faker(['en_US'])
@@ -39,7 +38,8 @@ def set_user():
 
     user_check = User.objects.filter(username=u_name)[0]
 
-def search_book(key_word):
+
+def get_and_save_books_data(key_word):
     fake = Faker(['en_US'])
     url = "http://openlibrary.org/search.json"
     payload = {"q": key_word}
@@ -51,7 +51,6 @@ def search_book(key_word):
     books = json_data.get("docs")
 
     for book in books:
-        pprint(book)
         data = dict(
             name=book.get("title"),
             author=book.get("publisher_facet")[0] if book.get(
@@ -61,4 +60,10 @@ def search_book(key_word):
             date_of_relase=fake.date_time_between()
         )
 
-        pprint(data)
+        serializer = BookSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            print("Book saved successfully: ", book.get("title"))
+        else:
+            continue
