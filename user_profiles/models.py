@@ -11,3 +11,13 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.city}"
+
+
+class ProfileStatus(models.Model):
+    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    status_message = models.CharField(max_length=240)
+    date_of_create = models.DateTimeField(auto_now_add=True)
+    dete_of_update = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user_profile}"
