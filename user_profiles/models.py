@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
@@ -8,7 +9,8 @@ class Profile(models.Model):
         User, on_delete=models.CASCADE, related_name="profile")
     bio = models.CharField(max_length=300, blank=True, null=True)
     city = models.CharField(max_length=120, blank=True, null=True)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True,
+                              upload_to='profile_photos/%Y/%m/')
 
     def __str__(self):
         return f"{self.user.username} - {self.city}"
@@ -23,7 +25,7 @@ class Profile(models.Model):
             if img.height > 600 or img.width > 600:
                 output_size = (600, 600)
                 img.thumbnail(output_size)
-                img.save(self.foto.path)
+                img.save(self.image.path)
 
 
 class ProfileStatus(models.Model):
