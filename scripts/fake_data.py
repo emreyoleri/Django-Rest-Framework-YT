@@ -1,6 +1,5 @@
 import os
 import random
-from urllib import request
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'book_market.settings')
 
 import django
@@ -9,8 +8,9 @@ django.setup()
 from django.contrib.auth.models import User
 
 from faker import Faker
-import requests
 
+import requests 
+from pprint import pprint
 
 def set_user():
     fake = Faker(['en_US'])
@@ -38,13 +38,27 @@ def set_user():
     user.save()
 
     user_check = User.objects.filter(username=u_name)[0]
-    
 
-from pprint import pprint
 def search_book(key_word):
+    fake = Faker(['en_US'])
     url = "http://openlibrary.org/search.json"
     payload = {"q": key_word}
-    res = requests.get(url , params=payload)
-    if res.status_code == 200:
-        data = res.json()
+    res = requests.get(url, params=payload)
+    if res.status_code != 200:
+        print("Wrong request made", res.status_code)
+        return
+    json_data = res.json()
+    books = json_data.get("docs")
+
+    for book in books:
+        pprint(book)
+        data = dict(
+            name=book.get("title"),
+            author=book.get("publisher_facet")[0] if book.get(
+                "publisher_facet") else "Emre Yoleri",
+            description='-'.join(book.get("author_facet")) if book.get("author_facet")
+            else "OL115220A Edmund O'Donovan",
+            date_of_relase=fake.date_time_between()
+        )
+
         pprint(data)
