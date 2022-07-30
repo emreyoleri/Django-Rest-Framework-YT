@@ -41,9 +41,10 @@ def set_user():
     
 
 from pprint import pprint
-def search_book():
+def search_book(key_word):
     url = "http://openlibrary.org/search.json"
-    res = requests.get(url)
+    payload = {"q": key_word}
+    res = requests.get(url , params=payload)
     if res.status_code == 200:
         data = res.json()
         pprint(data)
