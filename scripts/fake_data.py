@@ -1,5 +1,6 @@
 import os
 import random
+from urllib import request
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'book_market.settings')
 
 import django
@@ -8,6 +9,7 @@ django.setup()
 from django.contrib.auth.models import User
 
 from faker import Faker
+import requests
 
 
 def set_user():
@@ -36,4 +38,12 @@ def set_user():
     user.save()
 
     user_check = User.objects.filter(username=u_name)[0]
-   
+    
+
+from pprint import pprint
+def search_book():
+    url = "http://openlibrary.org/search.json"
+    res = requests.get(url)
+    if res.status_code == 200:
+        data = res.json()
+        pprint(data)
