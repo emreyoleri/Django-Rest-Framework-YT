@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "user_profiles.apps.UserProfilesConfig",
     "rest_framework",
     "rest_framework.authtoken",
-    "rest_auth",
+    "dj_rest_auth",
     "django_extensions",
 ]
 
